@@ -64,7 +64,8 @@ function App() {
 //con alt 96 se sacan ``
 
   const deleteEmpleado =(id)=>{
-    axios.delete(`http://localhost:3001/delete/${id}`).then(()=>{
+console.log("deleting" ,id)
+    axios.delete(`http://localhost:3001/delete/${id}/ `).then(()=>{
       getEmpleados();
       limpiarCampos();
       Swal.fire({
@@ -208,7 +209,12 @@ function App() {
                     editarEmpleado(val);
                   }}
                   type="button" className="btn btn-info">Editar</button>
-                  <button type="button" className="btn btn-danger">Eliminar</button>
+                  <button 
+                  onClick={()=>{
+                    deleteEmpleado(val.id);
+                  }}
+                  
+                  type="button" className="btn btn-danger">Eliminar</button>
                 </div>
               </td>
 
