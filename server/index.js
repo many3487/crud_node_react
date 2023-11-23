@@ -49,6 +49,25 @@ app.get('/empleados', (req, res)=> {
     );
 });
 
+app.put('/updates', (req, res)=> {
+    const id = req.body.id;
+    const nombre = req.body.nombre;
+    const edad = req.body.edad;
+    const pais = req.body.pais;
+    const cargo = req.body.cargo;
+    const anios = req.body.anios;
+
+    db.query('UPDATE empleados set nombre= ?, edad=?, pais=?, cargo=?, anios=? WHERE id= ?',[nombre, edad, pais, cargo, anios,id],
+    (err,result) => {
+        if(err){
+            console.log(err);
+        }else{
+            res.send("Empleado Actualizado con exito!");
+        }
+    }
+    );
+});
+
 app.listen(3001,()=>{
     console.log('soy el back y estoy corriendo en el puerto 3001');
 })
