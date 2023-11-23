@@ -49,7 +49,7 @@ app.get('/empleados', (req, res)=> {
     );
 });
 
-app.put('/updates', (req, res)=> {
+app.put('/update', (req, res)=> {
     const id = req.body.id;
     const nombre = req.body.nombre;
     const edad = req.body.edad;
@@ -62,7 +62,22 @@ app.put('/updates', (req, res)=> {
         if(err){
             console.log(err);
         }else{
-            res.send("Empleado Actualizado con exito!");
+            res.send(result);
+        }
+    }
+    );
+});
+
+app.delete('/delete/:id', (req, res)=> {
+    const id = req.params.id;
+    
+
+    db.query('DELETE FROM empleados WHERE id= ?',id,
+    (err,result) => {
+        if(err){
+            console.log(err);
+        }else{
+            res.send(result);
         }
     }
     );

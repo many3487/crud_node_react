@@ -3,13 +3,16 @@ import {useState} from "react";
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import Swal from 'sweetalert2'
+
+
 function App() {
   const [nombre,setNombre] =useState("");
-  const [edad,setEdad] =useState(0);
+  const [edad,setEdad] =useState();
   const [pais,setPais] =useState("");
   const [cargo,setCargo] =useState("");
-  const [anios,setAnios] =useState(0);
-  const [id,setId] =useState(0);
+  const [anios,setAnios] =useState();
+  const [id,setId] =useState();
 
 
   const [editar,setEditar] =useState(false);
@@ -27,10 +30,62 @@ function App() {
 
     }).then(()=>{
       getEmpleados();
-      alert("Empleado registrado");
+      limpiarCampos();
+      Swal.fire({
+        title: "<strong>Empleado registrado</strong>",
+        html: "<i>EL empleado <strong>"+nombre+"</strong> fue registrado exitosamente</i>",
+        icon:'success',
+        timer:5000,
+      })
     })
   };
 
+  const update =()=>{
+    axios.put("http://localhost:3001/update", {
+      id:id,
+      nombre: nombre,
+      edad: edad,
+      pais: pais,
+      cargo: cargo,
+      anios: anios
+
+    }).then(()=>{
+      getEmpleados();
+      limpiarCampos();
+      Swal.fire({
+        title: "<strong>Se ha actualizado correctamente</strong>",
+        html: "<i>EL empleado <strong>"+nombre+"</strong> fue Actualizado con exito</i>",
+        icon:'success',
+        timer:5000,
+      })
+    })
+  };
+//primera forma de eliminar "http://localhost:3001/delete/"+id
+//con alt 96 se sacan ``
+
+  const deleteEmpleado =(id)=>{
+    axios.delete(`http://localhost:3001/delete/${id}`).then(()=>{
+      getEmpleados();
+      limpiarCampos();
+      Swal.fire({
+        title: "<strong>Se ha actualizado correctamente</strong>",
+        html: "<i>EL empleado <strong>"+nombre+"</strong> fue Actualizado con exito</i>",
+        icon:'success',
+        timer:5000,
+      })
+    })
+  };
+
+ const limpiarCampos= ()=>{
+    setId("");
+    setNombre("");
+    setEdad("");
+    setPais("");
+    setCargo("");
+    setAnios("");
+    setEditar(false);
+
+ };
   const getEmpleados =()=>{
     axios.get("http://localhost:3001/empleados").then((response)=>{
       setEmpleados(response.data);
@@ -104,9 +159,19 @@ function App() {
           
         </div>
         <div className="card-footer text-muted">
-          <button className="btn btn-success" onClick={add} >Guardar</button >
-          <button className='btn btn-secondary' id ="lista" onClick={getEmpleados}>Lista</button>
 
+            {
+              editar?
+              <div className=''>
+              <button className="btn btn-warning m-2" onClick={update} >Actualizar</button >
+              <button className="btn btn-info m-2" onClick={limpiarCampos} >Cancelar</button >
+              </div>
+              :
+              <div className=''>
+              <button className="btn btn-success" onClick={add} >Guardar</button >
+              <button className='btn btn-secondary' id ="lista" onClick={getEmpleados}>Lista</button>
+              </div>
+            }
         </div>
       </div>
 
@@ -128,6 +193,7 @@ function App() {
 
             {
             empleadosList.map((val,key)=>{
+              //editar
               return <tr key={val.id}>
               <th>{val.id}</th>
               <td>{val.nombre}</td>

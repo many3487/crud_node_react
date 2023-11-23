@@ -8,4 +8,7 @@ para peticiones
 
 
 https://www.youtube.com/watch?v=U1u2jNYXmBw
-1:43:36
+2:15:29
+
+para eliminar se instala sweetAlert2 https://sweetalert2.github.io/#download
+esto es de front

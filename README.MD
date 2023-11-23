@@ -14,7 +14,7 @@ puerto
 3000
 - npm install axios (para peticiones opcional)
 - npm install react-bootstrap bootstrap
-
+- npm install sweetalert2
 
 ## back
 (server) se carga el back para que inicie (enter, enter enter ultimo yes)
